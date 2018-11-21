@@ -1,4 +1,5 @@
 from .tools.tokenize import get_class
+from gensim.models import Word2Vec
 
 
 class EMBDataSet:
@@ -6,6 +7,7 @@ class EMBDataSet:
         self.qa_collection = opts.collection
         self.file_path = opts.file_path
         self.tokenizer = get_class(opts.tokenizer_type)()
+        self.opts = opts
 
     def write2txt(self):
         url_set = set()
@@ -18,4 +20,15 @@ class EMBDataSet:
                     a_tokens = self.tokenizer.segment(answer)
                     fout.write(' '.join(q_tokens) + '\n')
                     fout.write(' '.join(a_tokens) + '\n')
+        fout.close()
+
+    def get_w2v_emb_text(self):
+        model = Word2Vec.load(self.opts.emb_path)
+        with open(self.opts.emb_text_path, 'w', encoding='utf-8') as fout:
+            for vocab in model.wv.vocab:
+                vocab_line_text_list = [vocab]
+                vocab_vector = model.wv[vocab]
+                vocab_line_text_list.extend(list(vocab_vector))
+                vocab_line_text = ' '.join([str(t) for t in vocab_line_text_list])
+                fout.write(vocab_line_text + '\n')
         fout.close()

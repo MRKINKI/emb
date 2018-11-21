@@ -13,6 +13,12 @@ def run_embedding(opts):
     emb_model.train()
 
 
+def run_convert_emb_to_text(opts):
+    eds = EMBDataSet(opts)
+    eds.get_w2v_emb_text()
+
+
 if __name__ == '__main__':
     # run_build_corpus(Config)
-    run_embedding(Config)
+    # run_embedding(Config)
+    run_convert_emb_to_text(Config)

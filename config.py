@@ -8,3 +8,4 @@ class Config:
     emb_method = 'word2vec'
     emb_path = './data/word2vec.model'
     vocab_path = './data/vocab.txt'
+    emb_text_path = './data/emb.txt'
